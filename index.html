@@ -230,6 +230,141 @@
 
     .form-success.visible { display: block; }
 
+    /* ── Logo marquee ───────────────────────────────────────────── */
+    .logo-marquee {
+      position: relative;
+      width: 100%;
+      padding: 2rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+    }
+
+    .logo-marquee-label {
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo-marquee-track-wrap {
+      display: flex;
+      overflow: hidden;
+    }
+
+    .logo-marquee-track {
+      display: flex;
+      gap: 3rem;
+      flex-shrink: 0;
+      animation: marquee 30s linear infinite;
+    }
+
+    .logo-marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 0.875rem;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: color 0.2s ease;
+    }
+
+    .logo-marquee-item:hover { color: rgba(255, 255, 255, 0.6); }
+
+    .logo-marquee-item svg { flex-shrink: 0; }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .logo-marquee-track { animation: none; }
+    }
+
+    .logo-marquee-fade {
+      pointer-events: none;
+      position: absolute;
+      inset-block: 0;
+      width: 6rem;
+    }
+
+    .logo-marquee-fade-left {
+      left: 0;
+      background: linear-gradient(to right, var(--bg-base), transparent);
+    }
+
+    .logo-marquee-fade-right {
+      right: 0;
+      background: linear-gradient(to left, var(--bg-base), transparent);
+    }
+
+    /* ── Scroll snake ───────────────────────────────────────────── */
+    .scroll-snake {
+      position: relative;
+      width: 100%;
+      max-width: 36rem;
+      margin-inline: auto;
+      padding: 5rem 1rem;
+    }
+
+    .scroll-snake svg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      pointer-events: none;
+    }
+
+    .scroll-snake-inner {
+      position: relative;
+    }
+
+    .scroll-snake-item {
+      position: absolute;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      max-width: 18rem;
+      opacity: 0.3;
+      transition: opacity 0.5s ease;
+    }
+
+    .scroll-snake-item.lit { opacity: 1; }
+
+    .scroll-snake-dot {
+      margin-top: 0.25rem;
+      flex-shrink: 0;
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+
+    .scroll-snake-item.lit .scroll-snake-dot {
+      border-color: #7c3aed;
+      background: rgba(124, 58, 237, 0.3);
+      box-shadow: 0 0 10px 2px rgba(124, 58, 237, 0.4);
+    }
+
+    .scroll-snake-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 0.25rem;
+    }
+
+    .scroll-snake-desc {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.45);
+      line-height: 1.6;
+    }
+
     /* ── Features ───────────────────────────────────────────────── */
     .section {
       padding: 4rem 0;
@@ -619,6 +754,35 @@
     </div>
   </nav>
 
+  <!-- AI model marquee -->
+  <section class="logo-marquee" aria-label="AI models supported by Cathova">
+    <p class="logo-marquee-label">Powered by 25+ AI models</p>
+    <div class="logo-marquee-track-wrap">
+      <div class="logo-marquee-track">
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Perplexity</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>ChatGPT</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>Claude</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Gemini</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>DeepSeek</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 6 0 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 6 0V6a3 3 0 0 0-6 0 3 3 0 0 0 3 3h12"/></svg>Grok</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>Meta</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2l9 4.9V17L12 22l-9-5.1V6.9L12 2z"/></svg>Mistral</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>Cohere</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Perplexity</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>ChatGPT</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>Claude</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Gemini</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>DeepSeek</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 6 0 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 6 0V6a3 3 0 0 0-6 0 3 3 0 0 0 3 3h12"/></svg>Grok</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>Meta</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2l9 4.9V17L12 22l-9-5.1V6.9L12 2z"/></svg>Mistral</span>
+        <span class="logo-marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>Cohere</span>
+      </div>
+    </div>
+    <div class="logo-marquee-fade logo-marquee-fade-left" aria-hidden="true"></div>
+    <div class="logo-marquee-fade logo-marquee-fade-right" aria-hidden="true"></div>
+  </section>
+
   <!-- Hero -->
   <section class="hero">
     <div class="container hero-wrap">
@@ -644,6 +808,14 @@
       <div class="form-success" id="form-success" role="status">
         You're on the list! We'll reach out before launch with early access details.
       </div>
+    </div>
+  </section>
+
+  <!-- How Cathova works -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How Cathova works</h2>
+      <div id="scroll-snake-root"></div>
     </div>
   </section>
 
@@ -833,6 +1005,95 @@
         submitBtn.textContent = "Join the Waitlist";
       }
     });
+  </script>
+
+  <script>
+    (function initScrollSnake() {
+      const FEATURES = [
+        { title: "One workspace for every AI", desc: "Switch between GPT, Claude, Gemini and 25+ models without losing your thread." },
+        { title: "Team memory that persists", desc: "Every insight, decision, and context lives in one place — across chats and models." },
+        { title: "Multi-model boardroom", desc: "Run the same prompt across multiple models simultaneously and compare answers side by side." },
+        { title: "Project-scoped rules", desc: "Set instructions once per project. Every model in that project follows them automatically." },
+        { title: "Built for teams", desc: "Invite teammates, share projects, and collaborate on AI workflows without re-explaining context." },
+      ];
+
+      const root = document.getElementById("scroll-snake-root");
+      if (!root) return;
+
+      const nodeY = (i) => 80 + i * 160;
+      const nodeX = (i) => (i % 2 === 0 ? 120 : 280);
+      const totalH = 80 + FEATURES.length * 160;
+
+      const buildPath = () => {
+        const pts = FEATURES.map((_, i) => ({ x: nodeX(i), y: nodeY(i) }));
+        let d = "M 200 0";
+        pts.forEach((pt, i) => {
+          const prev = i === 0 ? { x: 200, y: 0 } : pts[i - 1];
+          const cy = (prev.y + pt.y) / 2;
+          d += ` C ${prev.x} ${cy}, ${pt.x} ${cy}, ${pt.x} ${pt.y}`;
+        });
+        return d;
+      };
+
+      const pathD = buildPath();
+      const section = document.createElement("div");
+      section.className = "scroll-snake";
+      section.innerHTML = `
+        <svg height="${totalH + 80}" viewBox="0 0 400 ${totalH + 80}" preserveAspectRatio="xMidYMid meet">
+          <path d="${pathD}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2" stroke-linecap="round"></path>
+          <path id="scroll-snake-path" d="${pathD}" fill="none" stroke="url(#snake-grad)" stroke-width="2.5" stroke-linecap="round"></path>
+          <defs>
+            <linearGradient id="snake-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7C3AED"></stop>
+              <stop offset="100%" stop-color="#06B6D4"></stop>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="scroll-snake-inner" style="min-height:${totalH + 80}px"></div>
+      `;
+      root.appendChild(section);
+
+      const inner = section.querySelector(".scroll-snake-inner");
+      const pathEl = section.querySelector("#scroll-snake-path");
+      const items = FEATURES.map((f, i) => {
+        const isLeft = i % 2 === 0;
+        const el = document.createElement("div");
+        el.className = "scroll-snake-item";
+        el.style.top = (nodeY(i) - 20) + "px";
+        if (isLeft) {
+          el.style.left = "0";
+          el.style.flexDirection = "row";
+        } else {
+          el.style.right = "0";
+          el.style.flexDirection = "row-reverse";
+        }
+        el.innerHTML = `
+          <div class="scroll-snake-dot"></div>
+          <div style="text-align:${isLeft ? "left" : "right"}">
+            <p class="scroll-snake-title">${f.title}</p>
+            <p class="scroll-snake-desc">${f.desc}</p>
+          </div>
+        `;
+        inner.appendChild(el);
+        return el;
+      });
+
+      const update = () => {
+        const { top, height } = section.getBoundingClientRect();
+        const progress = Math.min(1, Math.max(0, (-top + window.innerHeight * 0.3) / (height - window.innerHeight * 0.4)));
+        if (pathEl) {
+          const len = pathEl.getTotalLength();
+          pathEl.style.strokeDasharray = len;
+          pathEl.style.strokeDashoffset = len * (1 - progress);
+        }
+        items.forEach((el, i) => {
+          el.classList.toggle("lit", progress >= i / FEATURES.length);
+        });
+      };
+
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+    })();
   </script>
 </body>
 </html>
