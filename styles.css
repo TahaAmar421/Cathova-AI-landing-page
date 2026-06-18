@@ -510,6 +510,7 @@ a:hover { opacity: 0.88; }
 /* ── Scroll stack cards (how it works) ─────────────────────── */
 .section--stack {
   padding-bottom: 0;
+  overflow: visible;
 }
 
 .section--stack .section-title {
@@ -519,6 +520,7 @@ a:hover { opacity: 0.88; }
 .scroll-stack {
   position: relative;
   height: calc(var(--stack-cards, 4) * 100vh);
+  overflow: visible;
 }
 
 .scroll-stack-sticky {
