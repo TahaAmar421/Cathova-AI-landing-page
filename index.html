@@ -113,14 +113,44 @@
   </section>
 
   <!-- How Cathova works -->
-  <section class="section section--stack" id="how-it-works">
+  <section class="section section--orbit" id="how-it-works">
     <div class="container">
       <h2 class="section-title" data-reveal>How Cathova works</h2>
     </div>
-    <div id="scroll-stack-root" class="scroll-stack" style="--stack-cards: 4" aria-label="How Cathova works">
-      <div class="scroll-stack-sticky">
-        <div class="scroll-stack-stage" id="scroll-stack-stage"></div>
-        <div class="scroll-stack-progress" id="scroll-stack-progress" aria-hidden="true"></div>
+    <div id="orbit-root" class="orbit" style="--orbit-steps: 5" aria-label="How Cathova works">
+      <div class="orbit-sticky">
+        <div class="orbit-stage" id="orbit-stage">
+          <svg class="orbit-svg" viewBox="0 0 1000 1000" aria-hidden="true">
+            <defs>
+              <linearGradient id="orbitArcGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#a78bfa" />
+                <stop offset="1" stop-color="#22d3ee" />
+              </linearGradient>
+            </defs>
+            <circle class="orbit-track" cx="500" cy="500" r="400" />
+            <circle class="orbit-arc" id="orbit-arc" cx="500" cy="500" r="400"
+                    pathLength="1" transform="rotate(-90 500 500)" />
+          </svg>
+
+          <div class="orbit-prism" id="orbit-prism" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="prismGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#6366f1" />
+                  <stop offset="0.5" stop-color="#a78bfa" />
+                  <stop offset="1" stop-color="#22d3ee" />
+                </linearGradient>
+              </defs>
+              <polygon points="32,16 84,50 32,84" fill="rgba(99,102,241,0.08)"
+                       stroke="url(#prismGrad)" stroke-width="2" stroke-linejoin="round" />
+              <polygon points="32,34 62,50 32,66" fill="none"
+                       stroke="url(#prismGrad)" stroke-width="1.4" stroke-linejoin="round" opacity="0.55" />
+            </svg>
+          </div>
+
+          <span class="orbit-traveler" id="orbit-traveler" aria-hidden="true"></span>
+          <div class="orbit-nodes" id="orbit-nodes"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -331,114 +361,112 @@
   </script>
 
   <script>
-    // ── "How Cathova works" sticky scroll-stack (readable, no cipher) ────
-    (function initScrollStack() {
-      const CARDS = [
+    // ── "How Cathova works" orbital scroll timeline ──────────────────────
+    (function initOrbit() {
+      var NODES = [
         {
-          tag: "Multi-model workspace",
-          title: "One workspace for every AI",
-          body: "Switch between GPT, Claude, Gemini, and 25+ models without losing your thread or re-uploading context.",
-          footer: "Stop copying context every time you change models. Cathova keeps your project memory attached.",
+          label: "Create your project",
+          body: "Spin up a shared workspace where your team's files, chats, and decisions live together — not scattered across a dozen tools.",
         },
         {
-          tag: "Shared memory",
-          title: "Team memory that persists",
-          body: "Every insight, decision, and file lives in one place — across chats, teammates, and models.",
-          footer: "Your whole team builds on the same context instead of re-explaining the project from scratch.",
+          label: "Add your context",
+          body: "Drop in files, instructions, personas, and context capsules once. Cathova attaches them to every conversation automatically.",
         },
         {
-          tag: "Boardroom",
-          title: "Multi-model boardroom",
-          body: "Run the same prompt across multiple models simultaneously and compare answers side by side.",
-          footer: "Debate mode surfaces the best path forward when models disagree — without leaving the workspace.",
+          label: "Chat across 25+ models",
+          body: "Talk to GPT, Claude, Gemini, Grok and more in one place. Switching models never drops your thread or your context.",
         },
         {
-          tag: "Built for teams",
-          title: "Collaboration without resets",
-          body: "Invite teammates, share projects, and collaborate on AI workflows with context that never resets.",
-          footer: "Real-time sync keeps chats, files, and capsules aligned for everyone on the project.",
+          label: "Memory that persists",
+          body: "Every insight and decision is remembered across chats and teammates, so nobody re-explains the project from scratch.",
+        },
+        {
+          label: "Your team stays in sync",
+          body: "Files, capsules, and chats update in real time for everyone — the whole team builds on the same living context.",
         },
       ];
 
-      const root = document.getElementById("scroll-stack-root");
-      const stage = document.getElementById("scroll-stack-stage");
-      const progressEl = document.getElementById("scroll-stack-progress");
-      if (!root || !stage || !progressEl) return;
+      var root = document.getElementById("orbit-root");
+      var nodesWrap = document.getElementById("orbit-nodes");
+      var arc = document.getElementById("orbit-arc");
+      var traveler = document.getElementById("orbit-traveler");
+      var prism = document.getElementById("orbit-prism");
+      if (!root || !nodesWrap || !arc || !traveler || !prism) return;
 
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const cardEls = [];
-      const dotEls = [];
-      let activeIndex = 0;
+      var N = NODES.length;
+      var STEP = 360 / N;          // angular gap between nodes
+      var START = -90;             // first node at top
+      var SWEEP = (N - 1) * STEP;  // total arc the traveler covers
+      var R = 40;                  // node radius as % of stage (matches SVG r=400/1000)
 
-      function esc(str) {
-        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      function esc(s) {
+        return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
       }
+      function rad(d) { return (d * Math.PI) / 180; }
 
-      CARDS.forEach(function (card) {
-        const el = document.createElement("article");
-        el.className = "scroll-stack-card";
+      var nodeEls = [];
+      NODES.forEach(function (n, i) {
+        var ang = START + i * STEP;
+        var c = Math.cos(rad(ang));
+        var side = c > 0.25 ? "is-right" : c < -0.25 ? "is-left" : "is-top";
+        var el = document.createElement("div");
+        el.className = "orbit-node " + side;
+        el.style.left = 50 + R * c + "%";
+        el.style.top = 50 + R * Math.sin(rad(ang)) + "%";
         el.innerHTML =
-          '<span class="scroll-stack-card-tag">' + esc(card.tag) + "</span>" +
-          '<h3 class="scroll-stack-card-title">' + esc(card.title) + "</h3>" +
-          '<p class="scroll-stack-card-body">' + esc(card.body) + "</p>" +
-          '<p class="scroll-stack-card-footer">' + esc(card.footer) + "</p>";
-        stage.appendChild(el);
-        cardEls.push(el);
-
-        const dot = document.createElement("span");
-        dot.className = "scroll-stack-dot";
-        progressEl.appendChild(dot);
-        dotEls.push(dot);
+          '<span class="orbit-node-dot"></span>' +
+          '<div class="orbit-node-text"><h3>' + esc(n.label) + "</h3>" +
+          "<p>" + esc(n.body) + "</p></div>";
+        nodesWrap.appendChild(el);
+        nodeEls.push(el);
       });
 
-      function getCardZ(cardIndex, active) {
-        var offset = cardIndex - active;
-        if (offset === 0) return 100;
-        if (offset > 0) return 100 - offset;
-        return 100 + offset;
-      }
-
-      function applyStyles(index) {
-        cardEls.forEach(function (el, i) {
-          var offset = i - index;
-          el.classList.toggle("is-active", i === index);
-          el.classList.toggle("is-past", i < index);
-          el.classList.toggle("is-ahead", i > index);
-          el.style.setProperty("--card-offset", String(offset));
-          el.style.zIndex = String(getCardZ(i, index));
-        });
-        dotEls.forEach(function (dot, i) {
-          dot.classList.toggle("active", i === index);
+      var activeIndex = -1;
+      function setActive(idx) {
+        if (idx === activeIndex) return;
+        activeIndex = idx;
+        nodeEls.forEach(function (el, i) {
+          el.classList.toggle("is-active", i === idx);
         });
       }
 
-      if (reducedMotion) {
-        applyStyles(0);
+      function place(p) {
+        var ang = START + p * SWEEP;
+        traveler.style.left = 50 + R * Math.cos(rad(ang)) + "%";
+        traveler.style.top = 50 + R * Math.sin(rad(ang)) + "%";
+        var f = p * (SWEEP / 360);
+        arc.style.strokeDasharray = f + " " + (1 - f + 0.001);
+        prism.style.transform = "translate(-50%, -50%) rotateY(" + p * 540 + "deg)";
+        setActive(Math.min(N - 1, Math.max(0, Math.round(p * (N - 1)))));
+      }
+
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var compact = window.matchMedia("(max-width: 820px)").matches;
+      if (reduced || compact) {
+        root.classList.add("is-static");
+        place(0);
+        setActive(0);
         return;
       }
 
-      function snapIndex(scrolled, scrollable) {
-        if (scrollable <= 0) return 0;
-        var step = scrollable / (CARDS.length - 1);
-        var raw = scrolled / step;
-        var biased = raw + (raw > 0 ? 0.28 : 0);
-        return Math.min(CARDS.length - 1, Math.max(0, Math.round(biased)));
+      var ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          var vh = window.innerHeight;
+          var scrollable = root.offsetHeight - vh;
+          var p = scrollable > 0
+            ? Math.min(1, Math.max(0, -root.getBoundingClientRect().top / scrollable))
+            : 0;
+          place(p);
+          ticking = false;
+        });
       }
 
-      function update() {
-        const viewportH = window.innerHeight;
-        const scrollable = root.offsetHeight - viewportH;
-        const scrolled = Math.max(0, -root.getBoundingClientRect().top);
-        const next = snapIndex(scrolled, scrollable);
-        if (next !== activeIndex) {
-          activeIndex = next;
-          applyStyles(activeIndex);
-        }
-      }
-
-      applyStyles(0);
-      window.addEventListener("scroll", update, { passive: true });
-      window.addEventListener("resize", update);
+      place(0);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
     })();
   </script>
 
