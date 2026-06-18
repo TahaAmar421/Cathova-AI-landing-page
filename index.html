@@ -320,22 +320,26 @@
       const CARDS = [
         {
           tag: "Multi-model workspace",
-          title: "One workspace for every AI — switch between GPT, Claude, Gemini, and 25+ models without losing your thread.",
+          title: "One workspace for every AI",
+          body: "Switch between GPT, Claude, Gemini, and 25+ models without losing your thread or re-uploading context.",
           footer: "Stop copying context every time you change models. Cathova keeps your project memory attached.",
         },
         {
           tag: "Shared memory",
-          title: "Team memory that persists — every insight, decision, and file lives in one place across chats and models.",
+          title: "Team memory that persists",
+          body: "Every insight, decision, and file lives in one place — across chats, teammates, and models.",
           footer: "Your whole team builds on the same context instead of re-explaining the project from scratch.",
         },
         {
           tag: "Boardroom",
-          title: "Run the same prompt across multiple models simultaneously and compare answers side by side.",
+          title: "Multi-model boardroom",
+          body: "Run the same prompt across multiple models simultaneously and compare answers side by side.",
           footer: "Debate mode surfaces the best path forward when models disagree — without leaving the workspace.",
         },
         {
           tag: "Built for teams",
-          title: "Invite teammates, share projects, and collaborate on AI workflows with context that never resets.",
+          title: "Collaboration without resets",
+          body: "Invite teammates, share projects, and collaborate on AI workflows with context that never resets.",
           footer: "Real-time sync keeps chats, files, and capsules aligned for everyone on the project.",
         },
       ];
@@ -348,27 +352,40 @@
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const cardEls = [];
       const dotEls = [];
+      let activeIndex = 0;
 
-      function getCardStyle(cardIndex, focus) {
-        const dist = cardIndex - focus;
-        if (dist < -1) return { x: 100, scale: 0.9, blur: 10, opacity: 0, z: 0 };
-        if (dist < 0) {
-          const t = 1 + dist;
+      function getCardStyle(cardIndex, active) {
+        const offset = cardIndex - active;
+        if (offset > 0) {
           return {
-            x: (1 - t) * 72,
-            scale: 0.92 + t * 0.08,
-            blur: (1 - t) * 6,
-            opacity: t,
-            z: CARDS.length + 2,
+            x: 72 * offset,
+            y: 14 * offset,
+            scale: 0.94 - offset * 0.02,
+            rotate: 2.5 * offset,
+            opacity: 0,
+            z: CARDS.length - offset,
           };
         }
+        if (offset === 0) {
+          return { x: 0, y: 0, scale: 1, rotate: 0, opacity: 1, z: CARDS.length + 10 };
+        }
+        const depth = -offset;
         return {
-          x: -dist * 52,
-          scale: 1 - dist * 0.035,
-          blur: Math.min(dist * 5, 12),
-          opacity: Math.max(0.35, 1 - dist * 0.14),
-          z: CARDS.length - Math.floor(dist),
+          x: 36 * depth,
+          y: 10 * depth,
+          scale: 1 - depth * 0.038,
+          rotate: 2 * depth,
+          opacity: Math.max(0.55, 1 - depth * 0.1),
+          z: CARDS.length + 10 - depth,
         };
+      }
+
+      function snapIndex(scrolled, scrollable) {
+        if (scrollable <= 0) return 0;
+        const step = scrollable / (CARDS.length - 1);
+        const raw = scrolled / step;
+        const biased = raw + (raw > 0 ? 0.22 : 0);
+        return Math.min(CARDS.length - 1, Math.max(0, Math.round(biased)));
       }
 
       CARDS.forEach(function (card, i) {
@@ -377,6 +394,7 @@
         el.innerHTML =
           '<span class="scroll-stack-card-tag">' + card.tag + "</span>" +
           '<h3 class="scroll-stack-card-title">' + card.title + "</h3>" +
+          '<p class="scroll-stack-card-body">' + card.body + "</p>" +
           '<p class="scroll-stack-card-footer">' + card.footer + "</p>";
         stage.appendChild(el);
         cardEls.push(el);
@@ -387,19 +405,18 @@
         dotEls.push(dot);
       });
 
-      function applyStyles(focus) {
+      function applyStyles(index) {
         cardEls.forEach(function (el, i) {
-          const style = reducedMotion
-            ? { x: -i * 24, scale: 1 - i * 0.03, blur: i * 4, opacity: 1 - i * 0.12, z: CARDS.length - i }
-            : getCardStyle(i, focus);
-          el.style.transform = "translateX(" + style.x + "px) scale(" + style.scale + ")";
-          el.style.filter = "blur(" + style.blur + "px)";
+          const style = reducedMotion ? getCardStyle(i, 0) : getCardStyle(i, index);
+          el.classList.toggle("is-active", i === index);
+          el.classList.toggle("is-behind", i < index);
+          el.style.transform =
+            "translate3d(" + style.x + "px, " + style.y + "px, 0) scale(" + style.scale + ") rotate(" + style.rotate + "deg)";
           el.style.opacity = String(style.opacity);
           el.style.zIndex = String(style.z);
         });
-        const active = Math.round(focus);
         dotEls.forEach(function (dot, i) {
-          dot.classList.toggle("active", i === active);
+          dot.classList.toggle("active", i === index);
         });
       }
 
@@ -411,13 +428,15 @@
       function update() {
         const viewportH = window.innerHeight;
         const scrollable = root.offsetHeight - viewportH;
-        if (scrollable <= 0) return;
         const scrolled = Math.max(0, -root.getBoundingClientRect().top);
-        const progress = Math.min(1, scrolled / scrollable);
-        applyStyles(progress * (CARDS.length - 1));
+        const next = snapIndex(scrolled, scrollable);
+        if (next !== activeIndex) {
+          activeIndex = next;
+          applyStyles(activeIndex);
+        }
       }
 
-      update();
+      applyStyles(0);
       window.addEventListener("scroll", update, { passive: true });
       window.addEventListener("resize", update);
     })();

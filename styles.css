@@ -535,8 +535,9 @@ a:hover { opacity: 0.88; }
 
 .scroll-stack-stage {
   position: relative;
-  width: min(92vw, 42rem);
-  height: min(68vh, 26rem);
+  width: min(86vw, 20.5rem);
+  height: min(76vh, 34rem);
+  margin-left: clamp(-1rem, -4vw, -2.5rem);
 }
 
 .scroll-stack-card {
@@ -544,49 +545,66 @@ a:hover { opacity: 0.88; }
   inset: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  padding: 2rem 2.25rem;
-  border-radius: 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(
-    145deg,
-    rgba(18, 28, 48, 0.96) 0%,
-    rgba(10, 16, 30, 0.98) 100%
-  );
+  gap: 1.5rem;
+  padding: 2rem 1.75rem 2.25rem;
+  border-radius: 1.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0a0a0a;
   box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  transform-origin: center center;
-  will-change: transform, filter, opacity;
+    0 28px 70px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  transform-origin: center top;
+  will-change: transform, opacity;
   pointer-events: none;
+  transition:
+    transform 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.38s ease;
+}
+
+.scroll-stack-card.is-active {
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(94, 234, 212, 0.12) inset;
+}
+
+.scroll-stack-card.is-behind {
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .scroll-stack-card-tag {
   display: inline-flex;
   align-self: flex-start;
-  padding: 0.35rem 0.85rem;
+  padding: 0.4rem 0.9rem;
   border-radius: 999px;
-  border: 1px solid rgba(94, 234, 212, 0.45);
+  border: 1px solid rgba(94, 234, 212, 0.55);
   color: #5eead4;
   font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
 }
 
 .scroll-stack-card-title {
-  flex: 1;
-  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+  font-size: clamp(1.65rem, 4.2vw, 2.15rem);
   font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+}
+
+.scroll-stack-card-body {
+  flex: 1;
+  font-size: clamp(1rem, 2.2vw, 1.125rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .scroll-stack-card-footer {
-  font-size: 0.9375rem;
+  font-size: 0.9rem;
   line-height: 1.6;
-  color: var(--text-muted);
-  max-width: 36rem;
+  color: rgba(148, 163, 184, 0.95);
+  max-width: 28rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .scroll-stack-progress {
@@ -610,12 +628,13 @@ a:hover { opacity: 0.88; }
 
 @media (max-width: 640px) {
   .scroll-stack-card {
-    padding: 1.5rem 1.35rem;
-    gap: 1rem;
+    padding: 1.6rem 1.35rem 1.85rem;
+    gap: 1.15rem;
   }
 
   .scroll-stack-stage {
-    height: min(72vh, 24rem);
+    width: min(90vw, 19rem);
+    height: min(78vh, 30rem);
   }
 }
 
@@ -986,8 +1005,6 @@ footer {
 .footer-privacy a {
   color: #c4b5fd;
 }
-
-
 /* GitHub Pages static landing — extras not in the Next.js CSS bundle */
 
 .logo-marquee-track-wrap {
