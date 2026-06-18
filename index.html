@@ -12,7 +12,13 @@
 <body>
   <div class="landing-page">
     <div class="landing-bg" aria-hidden="true">
-      <div class="landing-metallic-field" id="landing-metallic-field" aria-hidden="true"></div>
+      <div class="aurora">
+        <div class="aurora-blob aurora-blob-1"></div>
+        <div class="aurora-blob aurora-blob-2"></div>
+        <div class="aurora-blob aurora-blob-3"></div>
+      </div>
+      <div class="grid-bg"></div>
+      <div class="grain"></div>
     </div>
 
     <div class="announcement-bar">
@@ -26,7 +32,7 @@
       <div class="container nav-inner">
         <a href="#" class="logo" aria-label="Cathova AI home">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-            <rect width="32" height="32" rx="8" fill="#7c6ef0"/>
+            <rect width="32" height="32" rx="8" fill="#6366F1"/>
             <path d="M10 16c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
             <circle cx="16" cy="16" r="2" fill="#fff"/>
             <path d="M22 10l2 2M22 22l2-2" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
@@ -43,7 +49,6 @@
     </nav>
 
     <section class="hero">
-      <div class="hero-glow-left" aria-hidden="true"></div>
       <div class="container hero-grid">
         <div class="hero-copy">
           <div class="trust-badge">
@@ -60,7 +65,7 @@
             <a href="#how-it-works" class="btn-hero-secondary">See how it works</a>
           </div>
         </div>
-        <aside class="hero-card" aria-label="Workspace preview">
+        <aside class="hero-card" aria-label="Workspace preview" data-reveal>
           <div class="hero-card-tag"><span aria-hidden="true">✦</span> Boardroom</div>
           <h2 class="hero-card-title">Multi-model chat with memory that follows your project</h2>
           <div class="hero-card-visual" aria-hidden="true">
@@ -110,7 +115,7 @@
   <!-- How Cathova works -->
   <section class="section section--stack" id="how-it-works">
     <div class="container">
-      <h2 class="section-title">How Cathova works</h2>
+      <h2 class="section-title" data-reveal>How Cathova works</h2>
     </div>
     <div id="scroll-stack-root" class="scroll-stack" style="--stack-cards: 4" aria-label="How Cathova works">
       <div class="scroll-stack-sticky">
@@ -123,26 +128,34 @@
   <!-- Features -->
   <section class="section" id="features">
     <div class="container">
-      <h2 class="section-title">Built for teams who think in projects, not chats</h2>
-      <p class="section-sub">Stop re-explaining. Start building with memory that follows you everywhere.</p>
+      <h2 class="section-title" data-reveal>Built for teams who think in projects, not chats</h2>
+      <p class="section-sub" data-reveal data-reveal-delay="1">Stop re-explaining. Start building with memory that follows you everywhere.</p>
       <div class="features-grid">
-        <article class="feature-card">
-          <div class="feature-icon" aria-hidden="true">🧠</div>
+        <article class="feature-card" data-reveal>
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          </div>
           <h3>Shared Team Memory</h3>
           <p>Project context, files, and instructions persist across every conversation — so nothing gets lost when someone new joins.</p>
         </article>
-        <article class="feature-card">
-          <div class="feature-icon" aria-hidden="true">⚡</div>
+        <article class="feature-card" data-reveal data-reveal-delay="1">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          </div>
           <h3>25+ AI Models</h3>
           <p>Switch between GPT, Claude, Gemini, Grok, DeepSeek, and more — without losing a single byte of context.</p>
         </article>
-        <article class="feature-card">
-          <div class="feature-icon" aria-hidden="true">⚖️</div>
+        <article class="feature-card" data-reveal data-reveal-delay="2">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+          </div>
           <h3>Debate Mode</h3>
           <p>Run multiple models side-by-side on the same prompt. Compare answers instantly and pick the best path forward.</p>
         </article>
-        <article class="feature-card">
-          <div class="feature-icon" aria-hidden="true">🔄</div>
+        <article class="feature-card" data-reveal data-reveal-delay="3">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
+          </div>
           <h3>Real-time Sync</h3>
           <p>Your whole team sees the same project state live — chats, files, and context capsules update in real time.</p>
         </article>
@@ -153,9 +166,9 @@
   <!-- Visual mockup -->
   <section class="visual-section">
     <div class="container">
-      <h2 class="section-title">Cross-Chat Memory, always on</h2>
-      <p class="section-sub">One toggle. Every model. Every conversation. Context that actually sticks.</p>
-      <div class="mockup-wrap" role="img" aria-label="Mockup of Cathova AI workspace with Cross-Chat Memory enabled">
+      <h2 class="section-title" data-reveal>Cross-Chat Memory, always on</h2>
+      <p class="section-sub" data-reveal data-reveal-delay="1">One toggle. Every model. Every conversation. Context that actually sticks.</p>
+      <div class="mockup-wrap" role="img" aria-label="Mockup of Cathova AI workspace with Cross-Chat Memory enabled" data-reveal data-reveal-delay="2">
         <div class="mockup-chrome">
           <span class="mockup-dot"></span>
           <span class="mockup-dot"></span>
@@ -200,23 +213,23 @@
   <!-- Social proof -->
   <section class="social-proof">
     <div class="container">
-      <div class="avatars" aria-hidden="true">
+      <div class="avatars" aria-hidden="true" data-reveal>
         <div class="avatar">T</div>
         <div class="avatar">A</div>
         <div class="avatar">M</div>
         <div class="avatar">S</div>
         <div class="avatar">+</div>
       </div>
-      <p>Join <strong id="waitlist-count">50+</strong> founders waiting for early access</p>
+      <p data-reveal data-reveal-delay="1">Join <strong id="waitlist-count">50+</strong> founders waiting for early access</p>
     </div>
   </section>
 
   <!-- Bottom CTA -->
   <section class="cta-bottom" id="cta-bottom">
     <div class="container cta-waitlist">
-      <h2>Be first in line for September 2026</h2>
-      <p>Agency owners, product teams, and solo founders — this is built for you.</p>
-      <form class="signup-form" id="waitlist-form" novalidate>
+      <h2 data-reveal>Be first in line for September 2026</h2>
+      <p data-reveal data-reveal-delay="1">Agency owners, product teams, and solo founders — this is built for you.</p>
+      <form class="signup-form" id="waitlist-form" novalidate data-reveal data-reveal-delay="2">
         <div class="form-row">
           <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required />
           <input type="email" id="email" name="email" placeholder="Work email" autocomplete="email" required />
@@ -236,7 +249,7 @@
       <div>
         <a href="#" class="logo" style="margin-bottom:0.5rem">
           <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-            <rect width="32" height="32" rx="8" fill="#7c6ef0"/>
+            <rect width="32" height="32" rx="8" fill="#6366F1"/>
             <path d="M10 16c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
             <circle cx="16" cy="16" r="2" fill="#fff"/>
           </svg>
@@ -318,6 +331,7 @@
   </script>
 
   <script>
+    // ── "How Cathova works" sticky scroll-stack (readable, no cipher) ────
     (function initScrollStack() {
       const CARDS = [
         {
@@ -346,50 +360,6 @@
         },
       ];
 
-      const CIPHER = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*+=?";
-
-      function encryptText(text, seed) {
-        var hash = seed | 0;
-        return text.split("").map(function (char, index) {
-          if (char === " " || char === "\n" || char === "—" || char === "-") return char;
-          hash = (hash * 33 + index + char.charCodeAt(0)) | 0;
-          return CIPHER[Math.abs(hash) % CIPHER.length];
-        }).join("");
-      }
-
-      const ENCRYPTED = CARDS.map(function (card, index) {
-        return {
-          tag: encryptText(card.tag, index * 17 + 1),
-          title: encryptText(card.title, index * 17 + 2),
-          body: encryptText(card.body, index * 17 + 3),
-          footer: encryptText(card.footer, index * 17 + 4),
-        };
-      });
-
-      function fieldHtml(className, plain, cipher) {
-        return (
-          '<span class="scroll-stack-text ' + className + '">' +
-          '<span class="scroll-stack-text-plain">' + plain + "</span>" +
-          '<span class="scroll-stack-text-cipher">' + cipher + "</span>" +
-          "</span>"
-        );
-      }
-
-      function getCardZ(cardIndex, active) {
-        var offset = cardIndex - active;
-        if (offset === 0) return 100;
-        if (offset > 0) return 100 - offset;
-        return 100 + offset;
-      }
-
-      function snapIndex(scrolled, scrollable) {
-        if (scrollable <= 0) return 0;
-        var step = scrollable / (CARDS.length - 1);
-        var raw = scrolled / step;
-        var biased = raw + (raw > 0 ? 0.28 : 0);
-        return Math.min(CARDS.length - 1, Math.max(0, Math.round(biased)));
-      }
-
       const root = document.getElementById("scroll-stack-root");
       const stage = document.getElementById("scroll-stack-stage");
       const progressEl = document.getElementById("scroll-stack-progress");
@@ -400,14 +370,18 @@
       const dotEls = [];
       let activeIndex = 0;
 
-      CARDS.forEach(function (card, i) {
+      function esc(str) {
+        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      }
+
+      CARDS.forEach(function (card) {
         const el = document.createElement("article");
         el.className = "scroll-stack-card";
         el.innerHTML =
-          fieldHtml("scroll-stack-card-tag", card.tag, ENCRYPTED[i].tag) +
-          fieldHtml("scroll-stack-card-title", card.title, ENCRYPTED[i].title) +
-          fieldHtml("scroll-stack-card-body", card.body, ENCRYPTED[i].body) +
-          fieldHtml("scroll-stack-card-footer", card.footer, ENCRYPTED[i].footer);
+          '<span class="scroll-stack-card-tag">' + esc(card.tag) + "</span>" +
+          '<h3 class="scroll-stack-card-title">' + esc(card.title) + "</h3>" +
+          '<p class="scroll-stack-card-body">' + esc(card.body) + "</p>" +
+          '<p class="scroll-stack-card-footer">' + esc(card.footer) + "</p>";
         stage.appendChild(el);
         cardEls.push(el);
 
@@ -416,6 +390,13 @@
         progressEl.appendChild(dot);
         dotEls.push(dot);
       });
+
+      function getCardZ(cardIndex, active) {
+        var offset = cardIndex - active;
+        if (offset === 0) return 100;
+        if (offset > 0) return 100 - offset;
+        return 100 + offset;
+      }
 
       function applyStyles(index) {
         cardEls.forEach(function (el, i) {
@@ -436,6 +417,14 @@
         return;
       }
 
+      function snapIndex(scrolled, scrollable) {
+        if (scrollable <= 0) return 0;
+        var step = scrollable / (CARDS.length - 1);
+        var raw = scrolled / step;
+        var biased = raw + (raw > 0 ? 0.28 : 0);
+        return Math.min(CARDS.length - 1, Math.max(0, Math.round(biased)));
+      }
+
       function update() {
         const viewportH = window.innerHeight;
         const scrollable = root.offsetHeight - viewportH;
@@ -454,116 +443,37 @@
   </script>
 
   <script>
-    (function initMetallicShapes() {
-      var FACE = function (name) {
-        return '<div class="metal-face metal-face-' + name + '"></div>';
-      };
-
-      function buildShapeHtml(kind, size) {
-        var s = String(size);
-        if (kind === "sphere") {
-          return '<div class="metal-obj metal-sphere" style="--metal-size:' + s + 'px"></div>';
-        }
-        if (kind === "cube") {
-          return '<div class="metal-obj metal-cube" style="--metal-size:' + s + 'px">' +
-            FACE("front") + FACE("back") + FACE("left") + FACE("right") + FACE("top") + FACE("bottom") +
-            "</div>";
-        }
-        if (kind === "box") {
-          var h = Math.round(size * 1.35);
-          var d = Math.round(size * 0.62);
-          return '<div class="metal-obj metal-box" style="--metal-w:' + s + 'px;--metal-h:' + h + 'px;--metal-d:' + d + 'px">' +
-            FACE("front") + FACE("back") + FACE("left") + FACE("right") + FACE("top") + FACE("bottom") +
-            "</div>";
-        }
-        if (kind === "bolt") {
-          return '<div class="metal-obj metal-bolt" style="--metal-size:' + s + 'px">' +
-            '<div class="metal-bolt-head"></div><div class="metal-bolt-shaft"></div><div class="metal-bolt-tip"></div></div>';
-        }
-        if (kind === "spiky") {
-          return '<div class="metal-obj metal-spiky" style="--metal-size:' + s + 'px">' +
-            '<div class="metal-spiky-layer metal-spiky-back"></div><div class="metal-spiky-layer metal-spiky-front"></div></div>';
-        }
-        if (kind === "ring") {
-          return '<div class="metal-obj metal-ring" style="--metal-size:' + s + 'px"><div class="metal-ring-body"></div></div>';
-        }
-        if (kind === "diamond") {
-          return '<div class="metal-obj metal-diamond" style="--metal-size:' + s + 'px"><div class="metal-diamond-core"></div></div>';
-        }
-        if (kind === "hex") {
-          return '<div class="metal-obj metal-hex" style="--metal-size:' + s + 'px">' +
-            '<div class="metal-hex-top"></div><div class="metal-hex-side metal-hex-side-a"></div>' +
-            '<div class="metal-hex-side metal-hex-side-b"></div><div class="metal-hex-side metal-hex-side-c"></div></div>';
-        }
-        return "";
+    // ── Scroll reveals + light aurora parallax ───────────────────────────
+    (function initReveal() {
+      const els = document.querySelectorAll("[data-reveal]");
+      if (!els.length) return;
+      if (!("IntersectionObserver" in window)) {
+        els.forEach(function (el) { el.classList.add("is-visible"); });
+        return;
       }
-
-      var SHAPES = [
-        { x: "4%", y: "8%", size: 76, kind: "sphere", rx: 0.08, ry: 0.12, rz: 0.05, bx: 14, by: -22, bz: 8 },
-        { x: "86%", y: "6%", size: 68, kind: "cube", rx: 0.1, ry: 0.09, rz: 0.07, bx: 28, by: -10, bz: 16 },
-        { x: "78%", y: "28%", size: 62, kind: "bolt", rx: 0.07, ry: 0.11, rz: 0.06, bx: 42, by: 4, bz: 24 },
-        { x: "10%", y: "34%", size: 80, kind: "spiky", rx: 0.11, ry: 0.08, rz: 0.09, bx: 56, by: 14, bz: 32 },
-        { x: "48%", y: "12%", size: 70, kind: "ring", rx: 0.09, ry: 0.1, rz: 0.05, bx: 70, by: 24, bz: 40 },
-        { x: "22%", y: "58%", size: 66, kind: "box", rx: 0.08, ry: 0.12, rz: 0.08, bx: 84, by: 34, bz: 48 },
-        { x: "90%", y: "52%", size: 64, kind: "diamond", rx: 0.12, ry: 0.07, rz: 0.1, bx: 98, by: 44, bz: 56 },
-        { x: "6%", y: "72%", size: 72, kind: "hex", rx: 0.1, ry: 0.09, rz: 0.07, bx: 112, by: 54, bz: 64 },
-        { x: "58%", y: "42%", size: 58, kind: "cube", rx: 0.07, ry: 0.11, rz: 0.06, bx: 126, by: 64, bz: 72 },
-        { x: "72%", y: "78%", size: 74, kind: "sphere", rx: 0.09, ry: 0.08, rz: 0.11, bx: 140, by: 74, bz: 80 },
-        { x: "34%", y: "82%", size: 68, kind: "bolt", rx: 0.11, ry: 0.06, rz: 0.09, bx: 154, by: 84, bz: 88 },
-        { x: "92%", y: "88%", size: 76, kind: "spiky", rx: 0.08, ry: 0.1, rz: 0.07, bx: 168, by: 94, bz: 96 },
-        { x: "44%", y: "64%", size: 60, kind: "ring", rx: 0.1, ry: 0.09, rz: 0.08, bx: 182, by: 104, bz: 104 },
-        { x: "18%", y: "18%", size: 64, kind: "box", rx: 0.09, ry: 0.11, rz: 0.06, bx: 196, by: 114, bz: 112 },
-      ];
-
-      var field = document.getElementById("landing-metallic-field");
-      if (!field) return;
-
-      var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      var inners = [];
-
-      SHAPES.forEach(function (shape) {
-        var wrap = document.createElement("div");
-        wrap.className = "landing-metallic-shape";
-        wrap.style.left = shape.x;
-        wrap.style.top = shape.y;
-
-        var pivot = document.createElement("div");
-        pivot.className = "landing-metallic-pivot";
-        pivot.dataset.metallicInner = "true";
-        pivot.dataset.rx = String(shape.rx);
-        pivot.dataset.ry = String(shape.ry);
-        pivot.dataset.rz = String(shape.rz);
-        pivot.dataset.baseX = String(shape.bx);
-        pivot.dataset.baseY = String(shape.by);
-        pivot.dataset.baseZ = String(shape.bz);
-        pivot.innerHTML = buildShapeHtml(shape.kind, shape.size);
-
-        wrap.appendChild(pivot);
-        field.appendChild(wrap);
-        inners.push(pivot);
-      });
-
-      if (reducedMotion) return;
-
-      function apply() {
-        var scrollY = window.scrollY;
-        inners.forEach(function (inner) {
-          var rx = parseFloat(inner.dataset.rx || "0.1");
-          var ry = parseFloat(inner.dataset.ry || "0.1");
-          var rz = parseFloat(inner.dataset.rz || "0.08");
-          var baseX = parseFloat(inner.dataset.baseX || "0");
-          var baseY = parseFloat(inner.dataset.baseY || "0");
-          var baseZ = parseFloat(inner.dataset.baseZ || "0");
-          inner.style.transform =
-            "rotateX(" + (baseX + scrollY * rx) + "deg) " +
-            "rotateY(" + (baseY + scrollY * ry) + "deg) " +
-            "rotateZ(" + (baseZ + scrollY * rz) + "deg)";
+      const io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            io.unobserve(entry.target);
+          }
         });
-      }
+      }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+      els.forEach(function (el) { io.observe(el); });
+    })();
 
-      apply();
-      window.addEventListener("scroll", apply, { passive: true });
-      window.addEventListener("resize", apply);
+    (function initAuroraParallax() {
+      const aurora = document.querySelector(".aurora");
+      if (!aurora) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      let ticking = false;
+      function apply() {
+        aurora.style.transform = "translateY(" + (window.scrollY * 0.08) + "px)";
+        ticking = false;
+      }
+      window.addEventListener("scroll", function () {
+        if (!ticking) { window.requestAnimationFrame(apply); ticking = true; }
+      }, { passive: true });
     })();
   </script>
 </body>
