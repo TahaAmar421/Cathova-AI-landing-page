@@ -12,12 +12,6 @@
 <body>
   <div class="landing-page">
     <div class="landing-bg" aria-hidden="true">
-      <div class="aurora">
-        <div class="aurora-blob aurora-blob-1"></div>
-        <div class="aurora-blob aurora-blob-2"></div>
-        <div class="aurora-blob aurora-blob-3"></div>
-      </div>
-      <div class="grid-bg"></div>
       <div class="grain"></div>
     </div>
 
@@ -48,38 +42,20 @@
       </div>
     </nav>
 
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <div class="trust-badge">
-            <span class="trust-stars" aria-hidden="true">★★★★★</span>
-            <span>25+ models · one shared memory</span>
-          </div>
-          <h1>
-            <span class="hero-line-sans">The AI Workspace</span>
-            <span class="hero-line-serif">Where Context Never Dies</span>
-          </h1>
-          <p class="hero-sub">Cathova AI is the only workspace where your team's project files, personas, and chat history stay injected into every model — GPT, Claude, Gemini, and 25+ others — without starting over.</p>
-          <div class="hero-actions">
-            <a href="https://app.cathova.ai" class="btn-hero-primary">Get started free</a>
-            <a href="#how-it-works" class="btn-hero-secondary">See how it works</a>
-          </div>
+    <section class="hero hero--cycle" aria-label="Cathova AI">
+      <div class="hero-cycle-inner">
+        <h1 class="hero-cycle-heading">
+          Your Team Needs
+          <span class="hero-cycle-slot" id="hero-cycle-slot">
+            <span class="hero-cycle-word is-visible" id="hero-cycle-word">Smarter Tools</span>
+          </span>
+        </h1>
+        <div class="hero-cycle-measure" id="hero-cycle-measure" aria-hidden="true">
+          <span>Smarter Tools</span>
+          <span>Persistent Memory</span>
+          <span>shared context</span>
+          <span>an ai that remembers</span>
         </div>
-        <aside class="hero-card" aria-label="Workspace preview" data-reveal>
-          <div class="hero-card-tag"><span aria-hidden="true">✦</span> Boardroom</div>
-          <h2 class="hero-card-title">Multi-model chat with memory that follows your project</h2>
-          <div class="hero-card-visual" aria-hidden="true">
-            <div class="hero-card-doc hero-card-doc-1"></div>
-            <div class="hero-card-doc hero-card-doc-2"></div>
-            <div class="hero-card-doc hero-card-doc-3"></div>
-          </div>
-          <div class="hero-card-models">
-            <span class="hero-model-pill active">Claude</span>
-            <span class="hero-model-pill">GPT</span>
-            <span class="hero-model-pill">Gemini</span>
-          </div>
-          <p class="hero-card-note">*Context capsules, files, and rules sync across every chat in real time.</p>
-        </aside>
       </div>
     </section>
 
@@ -286,6 +262,58 @@
     </div>
   </footer>
   </div>
+
+  <script>
+    // ── Hero animated text cycle ─────────────────────────────────────────
+    (function initHeroCycle() {
+      var WORDS = [
+        "Smarter Tools",
+        "Persistent Memory",
+        "shared context",
+        "an ai that remembers",
+      ];
+      var INTERVAL = 3500;
+
+      var slot = document.getElementById("hero-cycle-slot");
+      var wordEl = document.getElementById("hero-cycle-word");
+      var measure = document.getElementById("hero-cycle-measure");
+      if (!slot || !wordEl || !measure) return;
+
+      var index = 0;
+      var busy = false;
+      var spans = measure.querySelectorAll("span");
+
+      function setSlotWidth(i) {
+        if (spans[i]) {
+          slot.style.width = spans[i].getBoundingClientRect().width + "px";
+        }
+      }
+
+      function cycle() {
+        if (busy) return;
+        busy = true;
+        wordEl.classList.remove("is-visible");
+        wordEl.classList.add("is-exiting");
+
+        window.setTimeout(function () {
+          index = (index + 1) % WORDS.length;
+          wordEl.textContent = WORDS[index];
+          wordEl.classList.remove("is-exiting");
+          wordEl.classList.add("is-entering");
+          setSlotWidth(index);
+
+          requestAnimationFrame(function () {
+            wordEl.classList.remove("is-entering");
+            wordEl.classList.add("is-visible");
+            busy = false;
+          });
+        }, 320);
+      }
+
+      setSlotWidth(0);
+      window.setInterval(cycle, INTERVAL);
+    })();
+  </script>
 
   <script>
     // ── Config: replace with your Tally form URL when ready ──────────────
