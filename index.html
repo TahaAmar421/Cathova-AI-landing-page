@@ -356,27 +356,27 @@
 
       function getCardStyle(cardIndex, active) {
         const offset = cardIndex - active;
-        if (offset > 0) {
+        if (offset === 0) {
+          return { x: 0, y: 0, scale: 1, rotate: 0, opacity: 1, z: 100 };
+        }
+        const depth = Math.abs(offset);
+        if (offset < 0) {
           return {
-            x: 72 * offset,
-            y: 14 * offset,
-            scale: 0.94 - offset * 0.02,
-            rotate: 2.5 * offset,
-            opacity: 0,
-            z: CARDS.length - offset,
+            x: -(34 * depth + 12),
+            y: 8 * depth,
+            scale: 1 - depth * 0.03,
+            rotate: -5 * depth,
+            opacity: Math.max(0.72, 0.95 - depth * 0.08),
+            z: 100 - depth,
           };
         }
-        if (offset === 0) {
-          return { x: 0, y: 0, scale: 1, rotate: 0, opacity: 1, z: CARDS.length + 10 };
-        }
-        const depth = -offset;
         return {
-          x: 36 * depth,
-          y: 10 * depth,
-          scale: 1 - depth * 0.038,
-          rotate: 2 * depth,
-          opacity: Math.max(0.55, 1 - depth * 0.1),
-          z: CARDS.length + 10 - depth,
+          x: 34 * depth + 12,
+          y: 8 * depth,
+          scale: 1 - depth * 0.03,
+          rotate: 5 * depth,
+          opacity: Math.max(0.72, 0.95 - depth * 0.08),
+          z: 100 - depth,
         };
       }
 
@@ -410,6 +410,7 @@
           const style = reducedMotion ? getCardStyle(i, 0) : getCardStyle(i, index);
           el.classList.toggle("is-active", i === index);
           el.classList.toggle("is-behind", i < index);
+          el.classList.toggle("is-ahead", i > index);
           el.style.transform =
             "translate3d(" + style.x + "px, " + style.y + "px, 0) scale(" + style.scale + ") rotate(" + style.rotate + "deg)";
           el.style.opacity = String(style.opacity);
