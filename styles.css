@@ -537,29 +537,35 @@ a:hover { opacity: 0.88; }
 
 .scroll-stack-stage {
   position: relative;
-  width: min(88vw, 21rem);
-  height: min(74vh, 33rem);
+  width: min(96vw, 58rem);
+  height: min(68vh, 30rem);
+  margin-inline: auto;
+  --stack-card-w: min(76vw, 28rem);
+  --stack-step: calc(var(--stack-card-w) * 0.8);
 }
 
 .scroll-stack-card {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 50%;
+  width: var(--stack-card-w);
+  height: 100%;
+  margin-left: calc(var(--stack-card-w) / -2);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 2rem 1.75rem 2.25rem;
+  gap: 1.35rem;
+  padding: 2rem 2rem 2.1rem;
   border-radius: 1.35rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: #0a0a0a;
   box-shadow:
     0 28px 70px rgba(0, 0, 0, 0.55),
     0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  transform: translateX(calc(var(--card-offset, 0) * var(--stack-step)));
   transform-origin: center center;
-  will-change: transform, opacity;
+  will-change: transform;
   pointer-events: none;
-  transition:
-    transform 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.38s ease;
+  transition: transform 1.05s cubic-bezier(0.33, 1, 0.38, 1);
 }
 
 .scroll-stack-card.is-active {
@@ -568,7 +574,7 @@ a:hover { opacity: 0.88; }
     0 0 0 1px rgba(94, 234, 212, 0.15) inset;
 }
 
-.scroll-stack-card.is-behind,
+.scroll-stack-card.is-past,
 .scroll-stack-card.is-ahead {
   border-color: rgba(255, 255, 255, 0.07);
   box-shadow:
@@ -576,9 +582,46 @@ a:hover { opacity: 0.88; }
     0 0 0 1px rgba(255, 255, 255, 0.03) inset;
 }
 
-.scroll-stack-card-tag {
+.scroll-stack-text {
+  display: block;
+  position: relative;
+}
+
+.scroll-stack-text-plain,
+.scroll-stack-text-cipher {
+  display: block;
+  transition: opacity 0.55s ease;
+}
+
+.scroll-stack-card.is-active .scroll-stack-text-cipher {
+  opacity: 0;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.scroll-stack-card:not(.is-active) .scroll-stack-text-plain {
+  opacity: 0;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.scroll-stack-text-cipher {
+  font-family: ui-monospace, "SF Mono", "Fira Code", Menlo, monospace;
+  color: rgba(94, 234, 212, 0.42);
+  letter-spacing: 0.06em;
+  word-break: break-word;
+  text-shadow: 0 0 18px rgba(94, 234, 212, 0.12);
+}
+
+.scroll-stack-card-tag.scroll-stack-text {
   display: inline-flex;
   align-self: flex-start;
+}
+
+.scroll-stack-card-tag .scroll-stack-text-plain {
+  display: inline-flex;
   padding: 0.4rem 0.9rem;
   border-radius: 999px;
   border: 1px solid rgba(94, 234, 212, 0.55);
@@ -586,30 +629,63 @@ a:hover { opacity: 0.88; }
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.02em;
+  font-family: inherit;
+}
+
+.scroll-stack-card-tag .scroll-stack-text-cipher {
+  display: inline-flex;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(94, 234, 212, 0.28);
+  font-size: 0.8125rem;
+}
+
+.scroll-stack-card:not(.is-active) .scroll-stack-card-tag .scroll-stack-text-cipher {
+  position: relative;
+  inset: auto;
+}
+
+.scroll-stack-card.is-active .scroll-stack-card-tag .scroll-stack-text-cipher {
+  display: none;
 }
 
 .scroll-stack-card-title {
-  font-size: clamp(1.65rem, 4.2vw, 2.15rem);
+  font-size: clamp(1.55rem, 3.6vw, 2rem);
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.03em;
+}
+
+.scroll-stack-card-title .scroll-stack-text-plain {
   color: #ffffff;
+  font-family: inherit;
+  letter-spacing: -0.03em;
 }
 
 .scroll-stack-card-body {
   flex: 1;
-  font-size: clamp(1rem, 2.2vw, 1.125rem);
+  font-size: clamp(0.98rem, 2vw, 1.1rem);
   line-height: 1.55;
+}
+
+.scroll-stack-card-body .scroll-stack-text-plain {
   color: rgba(255, 255, 255, 0.88);
+  font-family: inherit;
+  letter-spacing: normal;
 }
 
 .scroll-stack-card-footer {
   font-size: 0.9rem;
   line-height: 1.6;
-  color: rgba(148, 163, 184, 0.95);
-  max-width: 28rem;
+  max-width: 100%;
   padding-top: 0.25rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scroll-stack-card-footer .scroll-stack-text-plain {
+  color: rgba(148, 163, 184, 0.95);
+  font-family: inherit;
+  letter-spacing: normal;
 }
 
 .scroll-stack-progress {
@@ -632,14 +708,15 @@ a:hover { opacity: 0.88; }
 }
 
 @media (max-width: 640px) {
-  .scroll-stack-card {
-    padding: 1.6rem 1.35rem 1.85rem;
-    gap: 1.15rem;
+  .scroll-stack-stage {
+    width: min(98vw, 100%);
+    height: min(72vh, 28rem);
+    --stack-card-w: min(88vw, 22rem);
   }
 
-  .scroll-stack-stage {
-    width: min(90vw, 19rem);
-    height: min(78vh, 30rem);
+  .scroll-stack-card {
+    padding: 1.55rem 1.35rem 1.75rem;
+    gap: 1.1rem;
   }
 }
 

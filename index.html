@@ -344,6 +344,50 @@
         },
       ];
 
+      const CIPHER = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*+=?";
+
+      function encryptText(text, seed) {
+        var hash = seed | 0;
+        return text.split("").map(function (char, index) {
+          if (char === " " || char === "\n" || char === "—" || char === "-") return char;
+          hash = (hash * 33 + index + char.charCodeAt(0)) | 0;
+          return CIPHER[Math.abs(hash) % CIPHER.length];
+        }).join("");
+      }
+
+      const ENCRYPTED = CARDS.map(function (card, index) {
+        return {
+          tag: encryptText(card.tag, index * 17 + 1),
+          title: encryptText(card.title, index * 17 + 2),
+          body: encryptText(card.body, index * 17 + 3),
+          footer: encryptText(card.footer, index * 17 + 4),
+        };
+      });
+
+      function fieldHtml(className, plain, cipher) {
+        return (
+          '<span class="scroll-stack-text ' + className + '">' +
+          '<span class="scroll-stack-text-plain">' + plain + "</span>" +
+          '<span class="scroll-stack-text-cipher">' + cipher + "</span>" +
+          "</span>"
+        );
+      }
+
+      function getCardZ(cardIndex, active) {
+        var offset = cardIndex - active;
+        if (offset === 0) return 100;
+        if (offset > 0) return 100 - offset;
+        return 100 + offset;
+      }
+
+      function snapIndex(scrolled, scrollable) {
+        if (scrollable <= 0) return 0;
+        var step = scrollable / (CARDS.length - 1);
+        var raw = scrolled / step;
+        var biased = raw + (raw > 0 ? 0.28 : 0);
+        return Math.min(CARDS.length - 1, Math.max(0, Math.round(biased)));
+      }
+
       const root = document.getElementById("scroll-stack-root");
       const stage = document.getElementById("scroll-stack-stage");
       const progressEl = document.getElementById("scroll-stack-progress");
@@ -354,48 +398,14 @@
       const dotEls = [];
       let activeIndex = 0;
 
-      function getCardStyle(cardIndex, active) {
-        const offset = cardIndex - active;
-        if (offset === 0) {
-          return { x: 0, y: 0, scale: 1, rotate: 0, opacity: 1, z: 100 };
-        }
-        const depth = Math.abs(offset);
-        if (offset < 0) {
-          return {
-            x: -(34 * depth + 12),
-            y: 8 * depth,
-            scale: 1 - depth * 0.03,
-            rotate: -5 * depth,
-            opacity: Math.max(0.72, 0.95 - depth * 0.08),
-            z: 100 - depth,
-          };
-        }
-        return {
-          x: 34 * depth + 12,
-          y: 8 * depth,
-          scale: 1 - depth * 0.03,
-          rotate: 5 * depth,
-          opacity: Math.max(0.72, 0.95 - depth * 0.08),
-          z: 100 - depth,
-        };
-      }
-
-      function snapIndex(scrolled, scrollable) {
-        if (scrollable <= 0) return 0;
-        const step = scrollable / (CARDS.length - 1);
-        const raw = scrolled / step;
-        const biased = raw + (raw > 0 ? 0.22 : 0);
-        return Math.min(CARDS.length - 1, Math.max(0, Math.round(biased)));
-      }
-
       CARDS.forEach(function (card, i) {
         const el = document.createElement("article");
         el.className = "scroll-stack-card";
         el.innerHTML =
-          '<span class="scroll-stack-card-tag">' + card.tag + "</span>" +
-          '<h3 class="scroll-stack-card-title">' + card.title + "</h3>" +
-          '<p class="scroll-stack-card-body">' + card.body + "</p>" +
-          '<p class="scroll-stack-card-footer">' + card.footer + "</p>";
+          fieldHtml("scroll-stack-card-tag", card.tag, ENCRYPTED[i].tag) +
+          fieldHtml("scroll-stack-card-title", card.title, ENCRYPTED[i].title) +
+          fieldHtml("scroll-stack-card-body", card.body, ENCRYPTED[i].body) +
+          fieldHtml("scroll-stack-card-footer", card.footer, ENCRYPTED[i].footer);
         stage.appendChild(el);
         cardEls.push(el);
 
@@ -407,14 +417,12 @@
 
       function applyStyles(index) {
         cardEls.forEach(function (el, i) {
-          const style = reducedMotion ? getCardStyle(i, 0) : getCardStyle(i, index);
+          var offset = i - index;
           el.classList.toggle("is-active", i === index);
-          el.classList.toggle("is-behind", i < index);
+          el.classList.toggle("is-past", i < index);
           el.classList.toggle("is-ahead", i > index);
-          el.style.transform =
-            "translate3d(" + style.x + "px, " + style.y + "px, 0) scale(" + style.scale + ") rotate(" + style.rotate + "deg)";
-          el.style.opacity = String(style.opacity);
-          el.style.zIndex = String(style.z);
+          el.style.setProperty("--card-offset", String(offset));
+          el.style.zIndex = String(getCardZ(i, index));
         });
         dotEls.forEach(function (dot, i) {
           dot.classList.toggle("active", i === index);
