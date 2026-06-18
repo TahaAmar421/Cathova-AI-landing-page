@@ -507,6 +507,134 @@ a:hover { opacity: 0.88; }
   font-size: 0.9375rem;
 }
 
+/* ── Scroll stack cards (how it works) ─────────────────────── */
+.section--stack {
+  padding-bottom: 0;
+}
+
+.section--stack .section-title {
+  margin-bottom: 2rem;
+}
+
+.scroll-stack {
+  position: relative;
+  height: calc(var(--stack-cards, 4) * 100vh);
+}
+
+.scroll-stack-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 0 3rem;
+  overflow: hidden;
+}
+
+.scroll-stack-stage {
+  position: relative;
+  width: min(92vw, 42rem);
+  height: min(68vh, 26rem);
+}
+
+.scroll-stack-card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 2rem 2.25rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    145deg,
+    rgba(18, 28, 48, 0.96) 0%,
+    rgba(10, 16, 30, 0.98) 100%
+  );
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform-origin: center center;
+  will-change: transform, filter, opacity;
+  pointer-events: none;
+}
+
+.scroll-stack-card-tag {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(94, 234, 212, 0.45);
+  color: #5eead4;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.scroll-stack-card-title {
+  flex: 1;
+  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.scroll-stack-card-footer {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 36rem;
+}
+
+.scroll-stack-progress {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.scroll-stack-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.scroll-stack-dot.active {
+  background: #5eead4;
+  transform: scale(1.15);
+}
+
+@media (max-width: 640px) {
+  .scroll-stack-card {
+    padding: 1.5rem 1.35rem;
+    gap: 1rem;
+  }
+
+  .scroll-stack-stage {
+    height: min(72vh, 24rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-stack {
+    height: auto;
+  }
+
+  .scroll-stack-sticky {
+    position: relative;
+    height: auto;
+    padding: 2rem 0 3rem;
+  }
+
+  .scroll-stack-stage {
+    height: min(68vh, 26rem);
+  }
+}
+
 .features-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -885,69 +1013,6 @@ footer {
 
 @media (prefers-reduced-motion: reduce) {
   .logo-marquee-track { animation: none; }
-}
-
-/* Scroll snake (how it works) */
-.scroll-snake {
-  position: relative;
-  width: 100%;
-  max-width: 36rem;
-  margin-inline: auto;
-  padding: 5rem 1rem;
-}
-
-.scroll-snake svg {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  pointer-events: none;
-}
-
-.scroll-snake-inner {
-  position: relative;
-}
-
-.scroll-snake-item {
-  position: absolute;
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  max-width: 18rem;
-  opacity: 0.3;
-  transition: opacity 0.5s ease;
-}
-
-.scroll-snake-item.lit { opacity: 1; }
-
-.scroll-snake-dot {
-  margin-top: 0.25rem;
-  flex-shrink: 0;
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  background: transparent;
-  transition: all 0.3s ease;
-}
-
-.scroll-snake-item.lit .scroll-snake-dot {
-  border-color: #7c3aed;
-  background: rgba(124, 58, 237, 0.3);
-  box-shadow: 0 0 10px 2px rgba(124, 58, 237, 0.4);
-}
-
-.scroll-snake-title {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 0.25rem;
-}
-
-.scroll-snake-desc {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.45);
-  line-height: 1.6;
 }
 
 /* Bottom waitlist (hero form stays hidden via base landing.css) */

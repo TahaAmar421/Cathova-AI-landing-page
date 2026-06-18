@@ -106,10 +106,15 @@
   </section>
 
   <!-- How Cathova works -->
-  <section class="section" id="how-it-works">
+  <section class="section section--stack" id="how-it-works">
     <div class="container">
       <h2 class="section-title">How Cathova works</h2>
-      <div id="scroll-snake-root"></div>
+    </div>
+    <div id="scroll-stack-root" class="scroll-stack" style="--stack-cards: 4" aria-label="How Cathova works">
+      <div class="scroll-stack-sticky">
+        <div class="scroll-stack-stage" id="scroll-stack-stage"></div>
+        <div class="scroll-stack-progress" id="scroll-stack-progress" aria-hidden="true"></div>
+      </div>
     </div>
   </section>
 
@@ -311,91 +316,110 @@
   </script>
 
   <script>
-    (function initScrollSnake() {
-      const FEATURES = [
-        { title: "One workspace for every AI", desc: "Switch between GPT, Claude, Gemini and 25+ models without losing your thread." },
-        { title: "Team memory that persists", desc: "Every insight, decision, and context lives in one place — across chats and models." },
-        { title: "Multi-model boardroom", desc: "Run the same prompt across multiple models simultaneously and compare answers side by side." },
-        { title: "Project-scoped rules", desc: "Set instructions once per project. Every model in that project follows them automatically." },
-        { title: "Built for teams", desc: "Invite teammates, share projects, and collaborate on AI workflows without re-explaining context." },
+    (function initScrollStack() {
+      const CARDS = [
+        {
+          tag: "Multi-model workspace",
+          title: "One workspace for every AI — switch between GPT, Claude, Gemini, and 25+ models without losing your thread.",
+          footer: "Stop copying context every time you change models. Cathova keeps your project memory attached.",
+        },
+        {
+          tag: "Shared memory",
+          title: "Team memory that persists — every insight, decision, and file lives in one place across chats and models.",
+          footer: "Your whole team builds on the same context instead of re-explaining the project from scratch.",
+        },
+        {
+          tag: "Boardroom",
+          title: "Run the same prompt across multiple models simultaneously and compare answers side by side.",
+          footer: "Debate mode surfaces the best path forward when models disagree — without leaving the workspace.",
+        },
+        {
+          tag: "Built for teams",
+          title: "Invite teammates, share projects, and collaborate on AI workflows with context that never resets.",
+          footer: "Real-time sync keeps chats, files, and capsules aligned for everyone on the project.",
+        },
       ];
 
-      const root = document.getElementById("scroll-snake-root");
-      if (!root) return;
+      const root = document.getElementById("scroll-stack-root");
+      const stage = document.getElementById("scroll-stack-stage");
+      const progressEl = document.getElementById("scroll-stack-progress");
+      if (!root || !stage || !progressEl) return;
 
-      const nodeY = (i) => 80 + i * 160;
-      const nodeX = (i) => (i % 2 === 0 ? 120 : 280);
-      const totalH = 80 + FEATURES.length * 160;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const cardEls = [];
+      const dotEls = [];
 
-      const buildPath = () => {
-        const pts = FEATURES.map((_, i) => ({ x: nodeX(i), y: nodeY(i) }));
-        let d = "M 200 0";
-        pts.forEach((pt, i) => {
-          const prev = i === 0 ? { x: 200, y: 0 } : pts[i - 1];
-          const cy = (prev.y + pt.y) / 2;
-          d += ` C ${prev.x} ${cy}, ${pt.x} ${cy}, ${pt.x} ${pt.y}`;
-        });
-        return d;
-      };
-
-      const pathD = buildPath();
-      const section = document.createElement("div");
-      section.className = "scroll-snake";
-      section.innerHTML = `
-        <svg height="${totalH + 80}" viewBox="0 0 400 ${totalH + 80}" preserveAspectRatio="xMidYMid meet">
-          <path d="${pathD}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2" stroke-linecap="round"></path>
-          <path id="scroll-snake-path" d="${pathD}" fill="none" stroke="url(#snake-grad)" stroke-width="2.5" stroke-linecap="round"></path>
-          <defs>
-            <linearGradient id="snake-grad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#7C3AED"></stop>
-              <stop offset="100%" stop-color="#06B6D4"></stop>
-            </linearGradient>
-          </defs>
-        </svg>
-        <div class="scroll-snake-inner" style="min-height:${totalH + 80}px"></div>
-      `;
-      root.appendChild(section);
-
-      const inner = section.querySelector(".scroll-snake-inner");
-      const pathEl = section.querySelector("#scroll-snake-path");
-      const items = FEATURES.map((f, i) => {
-        const isLeft = i % 2 === 0;
-        const el = document.createElement("div");
-        el.className = "scroll-snake-item";
-        el.style.top = (nodeY(i) - 20) + "px";
-        if (isLeft) {
-          el.style.left = "0";
-          el.style.flexDirection = "row";
-        } else {
-          el.style.right = "0";
-          el.style.flexDirection = "row-reverse";
+      function getCardStyle(cardIndex, focus) {
+        const dist = cardIndex - focus;
+        if (dist < -1) return { x: 100, scale: 0.9, blur: 10, opacity: 0, z: 0 };
+        if (dist < 0) {
+          const t = 1 + dist;
+          return {
+            x: (1 - t) * 72,
+            scale: 0.92 + t * 0.08,
+            blur: (1 - t) * 6,
+            opacity: t,
+            z: CARDS.length + 2,
+          };
         }
-        el.innerHTML = `
-          <div class="scroll-snake-dot"></div>
-          <div style="text-align:${isLeft ? "left" : "right"}">
-            <p class="scroll-snake-title">${f.title}</p>
-            <p class="scroll-snake-desc">${f.desc}</p>
-          </div>
-        `;
-        inner.appendChild(el);
-        return el;
+        return {
+          x: -dist * 52,
+          scale: 1 - dist * 0.035,
+          blur: Math.min(dist * 5, 12),
+          opacity: Math.max(0.35, 1 - dist * 0.14),
+          z: CARDS.length - Math.floor(dist),
+        };
+      }
+
+      CARDS.forEach(function (card, i) {
+        const el = document.createElement("article");
+        el.className = "scroll-stack-card";
+        el.innerHTML =
+          '<span class="scroll-stack-card-tag">' + card.tag + "</span>" +
+          '<h3 class="scroll-stack-card-title">' + card.title + "</h3>" +
+          '<p class="scroll-stack-card-footer">' + card.footer + "</p>";
+        stage.appendChild(el);
+        cardEls.push(el);
+
+        const dot = document.createElement("span");
+        dot.className = "scroll-stack-dot";
+        progressEl.appendChild(dot);
+        dotEls.push(dot);
       });
 
-      const update = () => {
-        const { top, height } = section.getBoundingClientRect();
-        const progress = Math.min(1, Math.max(0, (-top + window.innerHeight * 0.3) / (height - window.innerHeight * 0.4)));
-        if (pathEl) {
-          const len = pathEl.getTotalLength();
-          pathEl.style.strokeDasharray = len;
-          pathEl.style.strokeDashoffset = len * (1 - progress);
-        }
-        items.forEach((el, i) => {
-          el.classList.toggle("lit", progress >= i / FEATURES.length);
+      function applyStyles(focus) {
+        cardEls.forEach(function (el, i) {
+          const style = reducedMotion
+            ? { x: -i * 24, scale: 1 - i * 0.03, blur: i * 4, opacity: 1 - i * 0.12, z: CARDS.length - i }
+            : getCardStyle(i, focus);
+          el.style.transform = "translateX(" + style.x + "px) scale(" + style.scale + ")";
+          el.style.filter = "blur(" + style.blur + "px)";
+          el.style.opacity = String(style.opacity);
+          el.style.zIndex = String(style.z);
         });
-      };
+        const active = Math.round(focus);
+        dotEls.forEach(function (dot, i) {
+          dot.classList.toggle("active", i === active);
+        });
+      }
+
+      if (reducedMotion) {
+        applyStyles(0);
+        return;
+      }
+
+      function update() {
+        const viewportH = window.innerHeight;
+        const scrollable = root.offsetHeight - viewportH;
+        if (scrollable <= 0) return;
+        const scrolled = Math.max(0, -root.getBoundingClientRect().top);
+        const progress = Math.min(1, scrolled / scrollable);
+        applyStyles(progress * (CARDS.length - 1));
+      }
 
       update();
       window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
     })();
   </script>
 </body>
