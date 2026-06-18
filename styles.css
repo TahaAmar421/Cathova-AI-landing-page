@@ -68,8 +68,8 @@ a:hover { opacity: 0.88; }
 .landing-metallic-field {
   position: absolute;
   inset: 0;
-  perspective: 1100px;
-  perspective-origin: 50% 40%;
+  perspective: 1400px;
+  perspective-origin: 50% 42%;
   overflow: hidden;
   pointer-events: none;
 }
@@ -77,69 +77,249 @@ a:hover { opacity: 0.88; }
 .landing-metallic-shape {
   position: absolute;
   transform-style: preserve-3d;
-  opacity: 0.62;
-  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.55));
+  opacity: 0.82;
+  filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.65));
 }
 
-.landing-metallic-shape-inner {
-  width: 100%;
-  height: 100%;
+.landing-metallic-pivot {
   transform-style: preserve-3d;
   will-change: transform;
+}
+
+.metal-obj {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* ── Reflective silver surfaces ─────────────────────────────── */
+.metal-face,
+.metal-bolt-head,
+.metal-bolt-shaft,
+.metal-bolt-tip,
+.metal-spiky-layer,
+.metal-ring-body,
+.metal-diamond-core,
+.metal-hex-top,
+.metal-hex-side {
   background: linear-gradient(
-    148deg,
-    #f8f8f8 0%,
-    #c7c7c7 14%,
-    #ffffff 26%,
-    #7a7a7a 42%,
-    #e2e2e2 58%,
-    #9a9a9a 72%,
-    #f0f0f0 86%,
-    #6e6e6e 100%
+    145deg,
+    #ffffff 0%,
+    #e8e8e8 10%,
+    #ffffff 22%,
+    #a8a8a8 38%,
+    #f2f2f2 52%,
+    #8a8a8a 66%,
+    #ffffff 78%,
+    #7a7a7a 90%,
+    #dcdcdc 100%
   );
   box-shadow:
-    inset 0 2px 5px rgba(255, 255, 255, 0.95),
-    inset 0 -3px 7px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.12);
+    inset 0 3px 8px rgba(255, 255, 255, 0.95),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
-.landing-metallic-shape-inner.shard-a {
-  clip-path: polygon(28% 0%, 78% 6%, 100% 38%, 86% 82%, 48% 100%, 8% 76%, 0% 42%);
-  border-radius: 42% 58% 63% 37% / 48% 42% 58% 52%;
+/* ── Sphere (circle) ───────────────────────────────────────── */
+.metal-sphere {
+  width: var(--metal-size);
+  height: var(--metal-size);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 26%, #ffffff 0%, #f0f0f0 14%, transparent 36%),
+    radial-gradient(circle at 68% 78%, rgba(0, 0, 0, 0.45) 0%, transparent 48%),
+    radial-gradient(circle at 50% 50%, #d8d8d8 0%, #9a9a9a 42%, #5e5e5e 72%, #b8b8b8 100%);
+  box-shadow:
+    inset -10px -14px 24px rgba(0, 0, 0, 0.5),
+    inset 8px 10px 20px rgba(255, 255, 255, 0.85),
+    0 16px 36px rgba(0, 0, 0, 0.55);
 }
 
-.landing-metallic-shape-inner.shard-b {
-  clip-path: polygon(12% 18%, 62% 0%, 100% 22%, 88% 68%, 52% 100%, 0% 72%);
-  border-radius: 58% 42% 38% 62% / 52% 58% 42% 48%;
+/* ── Cube (square) ─────────────────────────────────────────── */
+.metal-cube {
+  width: var(--metal-size);
+  height: var(--metal-size);
 }
 
-.landing-metallic-shape-inner.shard-c {
-  clip-path: polygon(35% 4%, 92% 12%, 100% 55%, 72% 96%, 18% 88%, 0% 48%);
-  border-radius: 63% 37% 54% 46% / 44% 56% 44% 56%;
+.metal-cube .metal-face {
+  position: absolute;
+  width: var(--metal-size);
+  height: var(--metal-size);
+  backface-visibility: hidden;
 }
 
-.landing-metallic-shape-inner.shard-d {
-  clip-path: polygon(8% 28%, 48% 0%, 96% 18%, 82% 74%, 38% 100%, 0% 62%);
-  border-radius: 47% 53% 61% 39% / 58% 44% 56% 42%;
+.metal-cube .metal-face-front  { transform: translateZ(calc(var(--metal-size) / 2)); }
+.metal-cube .metal-face-back   { transform: rotateY(180deg) translateZ(calc(var(--metal-size) / 2)); }
+.metal-cube .metal-face-left   { transform: rotateY(-90deg) translateZ(calc(var(--metal-size) / 2)); }
+.metal-cube .metal-face-right  { transform: rotateY(90deg) translateZ(calc(var(--metal-size) / 2)); }
+.metal-cube .metal-face-top    { transform: rotateX(90deg) translateZ(calc(var(--metal-size) / 2)); }
+.metal-cube .metal-face-bottom { transform: rotateX(-90deg) translateZ(calc(var(--metal-size) / 2)); }
+
+/* ── Box (rectangular prism) ───────────────────────────────── */
+.metal-box {
+  width: var(--metal-w);
+  height: var(--metal-h);
 }
 
-.landing-metallic-shape-inner.shard-e {
-  clip-path: polygon(22% 8%, 70% 0%, 100% 32%, 92% 78%, 50% 100%, 4% 68%);
-  border-radius: 52% 48% 40% 60% / 46% 54% 46% 54%;
+.metal-box .metal-face {
+  position: absolute;
+  backface-visibility: hidden;
 }
 
-.landing-metallic-shape-inner.shard-f {
-  clip-path: polygon(18% 0%, 84% 14%, 100% 52%, 76% 100%, 24% 92%, 0% 46%);
-  border-radius: 38% 62% 55% 45% / 50% 50% 50% 50%;
+.metal-box .metal-face-front,
+.metal-box .metal-face-back {
+  width: var(--metal-w);
+  height: var(--metal-h);
 }
 
-.landing-metallic-shape-inner.shard-g {
-  clip-path: polygon(6% 34%, 54% 0%, 100% 26%, 94% 70%, 42% 100%, 0% 58%);
-  border-radius: 66% 34% 48% 52% / 42% 58% 42% 58%;
+.metal-box .metal-face-left,
+.metal-box .metal-face-right {
+  width: var(--metal-d);
+  height: var(--metal-h);
+  left: calc((var(--metal-w) - var(--metal-d)) / 2);
 }
+
+.metal-box .metal-face-top,
+.metal-box .metal-face-bottom {
+  width: var(--metal-w);
+  height: var(--metal-d);
+  top: calc((var(--metal-h) - var(--metal-d)) / 2);
+}
+
+.metal-box .metal-face-front  { transform: translateZ(calc(var(--metal-d) / 2)); }
+.metal-box .metal-face-back   { transform: rotateY(180deg) translateZ(calc(var(--metal-d) / 2)); }
+.metal-box .metal-face-left   { transform: rotateY(-90deg) translateZ(calc(var(--metal-w) / 2)); }
+.metal-box .metal-face-right  { transform: rotateY(90deg) translateZ(calc(var(--metal-w) / 2)); }
+.metal-box .metal-face-top    { transform: rotateX(90deg) translateZ(calc(var(--metal-h) / 2)); }
+.metal-box .metal-face-bottom { transform: rotateX(-90deg) translateZ(calc(var(--metal-h) / 2)); }
+
+/* ── Bolt ──────────────────────────────────────────────────── */
+.metal-bolt {
+  width: var(--metal-size);
+  height: calc(var(--metal-size) * 1.75);
+}
+
+.metal-bolt-head {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(var(--metal-size) * 0.92);
+  height: calc(var(--metal-size) * 0.36);
+  margin-left: calc(var(--metal-size) * -0.46);
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  transform: translateZ(calc(var(--metal-size) * 0.18));
+}
+
+.metal-bolt-shaft {
+  position: absolute;
+  top: calc(var(--metal-size) * 0.32);
+  left: 50%;
+  width: calc(var(--metal-size) * 0.28);
+  height: calc(var(--metal-size) * 1.05);
+  margin-left: calc(var(--metal-size) * -0.14);
+  border-radius: 3px;
+  transform: translateZ(calc(var(--metal-size) * 0.08));
+}
+
+.metal-bolt-tip {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: calc(var(--metal-size) * 0.22);
+  height: calc(var(--metal-size) * 0.28);
+  margin-left: calc(var(--metal-size) * -0.11);
+  clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+  transform: translateZ(calc(var(--metal-size) * 0.05));
+}
+
+/* ── Spiky circle ──────────────────────────────────────────── */
+.metal-spiky {
+  width: var(--metal-size);
+  height: var(--metal-size);
+}
+
+.metal-spiky-layer {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%,
+    79% 91%, 50% 70%, 21% 91%, 32% 57%,
+    2% 35%, 39% 35%
+  );
+}
+
+.metal-spiky-back {
+  transform: translateZ(calc(var(--metal-size) * -0.14)) scale(0.94);
+  filter: brightness(0.72);
+}
+
+.metal-spiky-front {
+  transform: translateZ(calc(var(--metal-size) * 0.12));
+}
+
+/* ── Ring ──────────────────────────────────────────────────── */
+.metal-ring {
+  width: var(--metal-size);
+  height: var(--metal-size);
+}
+
+.metal-ring-body {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 44%, #ffffff 46%, #c8c8c8 58%, #8a8a8a 72%, #e0e0e0 86%, #9a9a9a 100%);
+  box-shadow:
+    inset 0 4px 10px rgba(255, 255, 255, 0.9),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.45),
+    0 14px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Diamond ───────────────────────────────────────────────── */
+.metal-diamond {
+  width: var(--metal-size);
+  height: calc(var(--metal-size) * 1.2);
+}
+
+.metal-diamond-core {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: calc(var(--metal-size) * 0.72);
+  height: calc(var(--metal-size) * 0.72);
+  transform: rotate(45deg) translateZ(calc(var(--metal-size) * 0.1));
+  box-shadow:
+    inset 0 3px 8px rgba(255, 255, 255, 0.95),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.4),
+    0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Hex nut ───────────────────────────────────────────────── */
+.metal-hex {
+  width: var(--metal-size);
+  height: calc(var(--metal-size) * 0.88);
+}
+
+.metal-hex-top {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  transform: translateZ(calc(var(--metal-size) * 0.16));
+}
+
+.metal-hex-side {
+  position: absolute;
+  left: 12%;
+  width: 76%;
+  height: calc(var(--metal-size) * 0.22);
+  filter: brightness(0.78);
+}
+
+.metal-hex-side-a { bottom: 8%; transform: rotateX(72deg) translateZ(calc(var(--metal-size) * -0.04)); }
+.metal-hex-side-b { bottom: 22%; transform: rotateX(88deg) translateZ(calc(var(--metal-size) * -0.1)); }
+.metal-hex-side-c { bottom: 36%; transform: rotateX(104deg) translateZ(calc(var(--metal-size) * -0.16)); }
 
 @media (prefers-reduced-motion: reduce) {
-  .landing-metallic-shape-inner {
+  .landing-metallic-pivot {
     transform: none !important;
   }
 }

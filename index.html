@@ -455,43 +455,92 @@
 
   <script>
     (function initMetallicShapes() {
-      const SHAPES = [
-        { x: "8%", y: "14%", size: 44, rx: 0.09, ry: 0.13, rz: 0.06, shape: "shard-a", bx: 12, by: -18, bz: 6 },
-        { x: "82%", y: "11%", size: 38, rx: 0.11, ry: 0.08, rz: 0.1, shape: "shard-b", bx: 23, by: -9, bz: 13 },
-        { x: "74%", y: "38%", size: 52, rx: 0.07, ry: 0.12, rz: 0.05, shape: "shard-c", bx: 34, by: 0, bz: 20 },
-        { x: "16%", y: "52%", size: 36, rx: 0.12, ry: 0.07, rz: 0.11, shape: "shard-d", bx: 45, by: 9, bz: 27 },
-        { x: "88%", y: "68%", size: 48, rx: 0.08, ry: 0.1, rz: 0.07, shape: "shard-e", bx: 56, by: 18, bz: 34 },
-        { x: "6%", y: "78%", size: 40, rx: 0.1, ry: 0.09, rz: 0.08, shape: "shard-f", bx: 67, by: 27, bz: 41 },
-        { x: "42%", y: "86%", size: 34, rx: 0.13, ry: 0.06, rz: 0.12, shape: "shard-g", bx: 78, by: 36, bz: 48 },
+      var FACE = function (name) {
+        return '<div class="metal-face metal-face-' + name + '"></div>';
+      };
+
+      function buildShapeHtml(kind, size) {
+        var s = String(size);
+        if (kind === "sphere") {
+          return '<div class="metal-obj metal-sphere" style="--metal-size:' + s + 'px"></div>';
+        }
+        if (kind === "cube") {
+          return '<div class="metal-obj metal-cube" style="--metal-size:' + s + 'px">' +
+            FACE("front") + FACE("back") + FACE("left") + FACE("right") + FACE("top") + FACE("bottom") +
+            "</div>";
+        }
+        if (kind === "box") {
+          var h = Math.round(size * 1.35);
+          var d = Math.round(size * 0.62);
+          return '<div class="metal-obj metal-box" style="--metal-w:' + s + 'px;--metal-h:' + h + 'px;--metal-d:' + d + 'px">' +
+            FACE("front") + FACE("back") + FACE("left") + FACE("right") + FACE("top") + FACE("bottom") +
+            "</div>";
+        }
+        if (kind === "bolt") {
+          return '<div class="metal-obj metal-bolt" style="--metal-size:' + s + 'px">' +
+            '<div class="metal-bolt-head"></div><div class="metal-bolt-shaft"></div><div class="metal-bolt-tip"></div></div>';
+        }
+        if (kind === "spiky") {
+          return '<div class="metal-obj metal-spiky" style="--metal-size:' + s + 'px">' +
+            '<div class="metal-spiky-layer metal-spiky-back"></div><div class="metal-spiky-layer metal-spiky-front"></div></div>';
+        }
+        if (kind === "ring") {
+          return '<div class="metal-obj metal-ring" style="--metal-size:' + s + 'px"><div class="metal-ring-body"></div></div>';
+        }
+        if (kind === "diamond") {
+          return '<div class="metal-obj metal-diamond" style="--metal-size:' + s + 'px"><div class="metal-diamond-core"></div></div>';
+        }
+        if (kind === "hex") {
+          return '<div class="metal-obj metal-hex" style="--metal-size:' + s + 'px">' +
+            '<div class="metal-hex-top"></div><div class="metal-hex-side metal-hex-side-a"></div>' +
+            '<div class="metal-hex-side metal-hex-side-b"></div><div class="metal-hex-side metal-hex-side-c"></div></div>';
+        }
+        return "";
+      }
+
+      var SHAPES = [
+        { x: "4%", y: "8%", size: 76, kind: "sphere", rx: 0.08, ry: 0.12, rz: 0.05, bx: 14, by: -22, bz: 8 },
+        { x: "86%", y: "6%", size: 68, kind: "cube", rx: 0.1, ry: 0.09, rz: 0.07, bx: 28, by: -10, bz: 16 },
+        { x: "78%", y: "28%", size: 62, kind: "bolt", rx: 0.07, ry: 0.11, rz: 0.06, bx: 42, by: 4, bz: 24 },
+        { x: "10%", y: "34%", size: 80, kind: "spiky", rx: 0.11, ry: 0.08, rz: 0.09, bx: 56, by: 14, bz: 32 },
+        { x: "48%", y: "12%", size: 70, kind: "ring", rx: 0.09, ry: 0.1, rz: 0.05, bx: 70, by: 24, bz: 40 },
+        { x: "22%", y: "58%", size: 66, kind: "box", rx: 0.08, ry: 0.12, rz: 0.08, bx: 84, by: 34, bz: 48 },
+        { x: "90%", y: "52%", size: 64, kind: "diamond", rx: 0.12, ry: 0.07, rz: 0.1, bx: 98, by: 44, bz: 56 },
+        { x: "6%", y: "72%", size: 72, kind: "hex", rx: 0.1, ry: 0.09, rz: 0.07, bx: 112, by: 54, bz: 64 },
+        { x: "58%", y: "42%", size: 58, kind: "cube", rx: 0.07, ry: 0.11, rz: 0.06, bx: 126, by: 64, bz: 72 },
+        { x: "72%", y: "78%", size: 74, kind: "sphere", rx: 0.09, ry: 0.08, rz: 0.11, bx: 140, by: 74, bz: 80 },
+        { x: "34%", y: "82%", size: 68, kind: "bolt", rx: 0.11, ry: 0.06, rz: 0.09, bx: 154, by: 84, bz: 88 },
+        { x: "92%", y: "88%", size: 76, kind: "spiky", rx: 0.08, ry: 0.1, rz: 0.07, bx: 168, by: 94, bz: 96 },
+        { x: "44%", y: "64%", size: 60, kind: "ring", rx: 0.1, ry: 0.09, rz: 0.08, bx: 182, by: 104, bz: 104 },
+        { x: "18%", y: "18%", size: 64, kind: "box", rx: 0.09, ry: 0.11, rz: 0.06, bx: 196, by: 114, bz: 112 },
       ];
 
-      const field = document.getElementById("landing-metallic-field");
+      var field = document.getElementById("landing-metallic-field");
       if (!field) return;
 
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const inners = [];
+      var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var inners = [];
 
       SHAPES.forEach(function (shape) {
-        const wrap = document.createElement("div");
+        var wrap = document.createElement("div");
         wrap.className = "landing-metallic-shape";
         wrap.style.left = shape.x;
         wrap.style.top = shape.y;
-        wrap.style.width = shape.size + "px";
-        wrap.style.height = Math.round(shape.size * 1.12) + "px";
 
-        const inner = document.createElement("div");
-        inner.className = "landing-metallic-shape-inner " + shape.shape;
-        inner.dataset.metallicInner = "true";
-        inner.dataset.rx = String(shape.rx);
-        inner.dataset.ry = String(shape.ry);
-        inner.dataset.rz = String(shape.rz);
-        inner.dataset.baseX = String(shape.bx);
-        inner.dataset.baseY = String(shape.by);
-        inner.dataset.baseZ = String(shape.bz);
+        var pivot = document.createElement("div");
+        pivot.className = "landing-metallic-pivot";
+        pivot.dataset.metallicInner = "true";
+        pivot.dataset.rx = String(shape.rx);
+        pivot.dataset.ry = String(shape.ry);
+        pivot.dataset.rz = String(shape.rz);
+        pivot.dataset.baseX = String(shape.bx);
+        pivot.dataset.baseY = String(shape.by);
+        pivot.dataset.baseZ = String(shape.bz);
+        pivot.innerHTML = buildShapeHtml(shape.kind, shape.size);
 
-        wrap.appendChild(inner);
+        wrap.appendChild(pivot);
         field.appendChild(wrap);
-        inners.push(inner);
+        inners.push(pivot);
       });
 
       if (reducedMotion) return;
