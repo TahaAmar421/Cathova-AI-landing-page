@@ -11,7 +11,9 @@
 </head>
 <body>
   <div class="landing-page">
-    <div class="landing-bg" aria-hidden="true"></div>
+    <div class="landing-bg" aria-hidden="true">
+      <div class="landing-metallic-field" id="landing-metallic-field" aria-hidden="true"></div>
+    </div>
 
     <div class="announcement-bar">
       <div class="container announcement-inner">
@@ -448,6 +450,71 @@
       applyStyles(0);
       window.addEventListener("scroll", update, { passive: true });
       window.addEventListener("resize", update);
+    })();
+  </script>
+
+  <script>
+    (function initMetallicShapes() {
+      const SHAPES = [
+        { x: "8%", y: "14%", size: 44, rx: 0.09, ry: 0.13, rz: 0.06, shape: "shard-a", bx: 12, by: -18, bz: 6 },
+        { x: "82%", y: "11%", size: 38, rx: 0.11, ry: 0.08, rz: 0.1, shape: "shard-b", bx: 23, by: -9, bz: 13 },
+        { x: "74%", y: "38%", size: 52, rx: 0.07, ry: 0.12, rz: 0.05, shape: "shard-c", bx: 34, by: 0, bz: 20 },
+        { x: "16%", y: "52%", size: 36, rx: 0.12, ry: 0.07, rz: 0.11, shape: "shard-d", bx: 45, by: 9, bz: 27 },
+        { x: "88%", y: "68%", size: 48, rx: 0.08, ry: 0.1, rz: 0.07, shape: "shard-e", bx: 56, by: 18, bz: 34 },
+        { x: "6%", y: "78%", size: 40, rx: 0.1, ry: 0.09, rz: 0.08, shape: "shard-f", bx: 67, by: 27, bz: 41 },
+        { x: "42%", y: "86%", size: 34, rx: 0.13, ry: 0.06, rz: 0.12, shape: "shard-g", bx: 78, by: 36, bz: 48 },
+      ];
+
+      const field = document.getElementById("landing-metallic-field");
+      if (!field) return;
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const inners = [];
+
+      SHAPES.forEach(function (shape) {
+        const wrap = document.createElement("div");
+        wrap.className = "landing-metallic-shape";
+        wrap.style.left = shape.x;
+        wrap.style.top = shape.y;
+        wrap.style.width = shape.size + "px";
+        wrap.style.height = Math.round(shape.size * 1.12) + "px";
+
+        const inner = document.createElement("div");
+        inner.className = "landing-metallic-shape-inner " + shape.shape;
+        inner.dataset.metallicInner = "true";
+        inner.dataset.rx = String(shape.rx);
+        inner.dataset.ry = String(shape.ry);
+        inner.dataset.rz = String(shape.rz);
+        inner.dataset.baseX = String(shape.bx);
+        inner.dataset.baseY = String(shape.by);
+        inner.dataset.baseZ = String(shape.bz);
+
+        wrap.appendChild(inner);
+        field.appendChild(wrap);
+        inners.push(inner);
+      });
+
+      if (reducedMotion) return;
+
+      function apply() {
+        var scrollY = window.scrollY;
+        inners.forEach(function (inner) {
+          var rx = parseFloat(inner.dataset.rx || "0.1");
+          var ry = parseFloat(inner.dataset.ry || "0.1");
+          var rz = parseFloat(inner.dataset.rz || "0.08");
+          var baseX = parseFloat(inner.dataset.baseX || "0");
+          var baseY = parseFloat(inner.dataset.baseY || "0");
+          var baseZ = parseFloat(inner.dataset.baseZ || "0");
+          inner.style.transform =
+            "rotateX(" + (baseX + scrollY * rx) + "deg) " +
+            "rotateY(" + (baseY + scrollY * ry) + "deg) " +
+            "rotateZ(" + (baseZ + scrollY * rz) + "deg)";
+        });
+      }
+
+      apply();
+      window.addEventListener("scroll", apply, { passive: true });
+      window.addEventListener("resize", apply);
     })();
   </script>
 </body>
